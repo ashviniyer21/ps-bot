@@ -7,15 +7,7 @@ import ast
 import json
 import requests, six
 import lxml.html as lh
-class EnemyPokemon:
-    def __init__(self, name, types, stats):
-        self.name = name
-        self.types = types
-        self.stats = stats
-    def print(self):
-        print("Name: ", self.name)
-        print("Types: ", self.types)
-        print("Stats: ", self.stats)
+from enemy_pokemon import EnemyPokemon
 class Move:
     def __init__(self, name, move_type, category, power, acc, pp, effect, prob, status_self, status_opponent, stats_self, stats_opponent):
         self.name = name
