@@ -1,4 +1,4 @@
-import requests, six
+import requests
 class EnemyPokemon:
     def __init__(self, name, types, stats):
         self.name = name

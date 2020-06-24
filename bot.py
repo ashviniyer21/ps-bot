@@ -5,7 +5,6 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver import ActionChains
 import ast
 import json
-import lxml.html as lh
 from pokemon import EnemyPokemon
 from move import Move
 from pokemon import Pokemon

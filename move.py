@@ -1,4 +1,4 @@
-import requests, six
+import requests
 class Move:
     def __init__(self, name, move_type, category, power, acc, pp, effect, prob, status_self, status_opponent, stats_self, stats_opponent):
         self.name = name
