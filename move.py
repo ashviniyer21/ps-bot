@@ -197,10 +197,6 @@ def get_all_moves():
     return moves
 all_moves = get_all_moves()
 def get_move(name):
-    if(isinstance(type(all_moves[0]), Move)):
-        print("WORKS")
-    else:
-        print("NOT WORKS")
     for i in range(len(all_moves)):
         if(all_moves[i].name.lower().replace(" ", "").replace("-", "") == name.lower() or all_moves[i].name.lower().replace(" ", "").replace("-", "") == name[:len(name)-1].lower()):
             return all_moves[i]

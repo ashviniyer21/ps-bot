@@ -16,9 +16,11 @@ pokemons = get_all_pokemon()
 
 console_debug = False
 
+general_debug = False
+
 enemy_pokemon = EnemyPokemon("HI", ["hi"], [0])
 enemy_level = 100
-print("MOVES")
+print("STARTING")
 
 def calc_type_matchup(move_type, pokemon_types):
     chart = dict()
@@ -175,7 +177,6 @@ def calculate(my_pokemon, enemy_pokemon):
             def_max += 5
             def_max *= 1.1
         if(temp_move.category != "status"):
-            print(my_pokemon.level)
             min_damage = 2 + ((temp_move.power * atk/def_min * (2 + (2 * my_pokemon.level/5.0)))/50.0)
             max_damage = 2 + ((temp_move.power * atk/def_max * (2 + (2 * my_pokemon.level/5.0)))/50.0)
             stab = 1.0
@@ -185,8 +186,8 @@ def calculate(my_pokemon, enemy_pokemon):
             min_damage *= calc_type_matchup(temp_move.move_type, enemy_pokemon.types) * stab * 0.85
             max_damage *= calc_type_matchup(temp_move.move_type, enemy_pokemon.types) * stab
         print("Damage: ", temp_move.name)
-        print(max_damage)
-        the_damage.append(max_damage)
+        print("Min: ", min_damage, " Max: ", max_damage)
+        the_damage.append((min_damage + max_damage)/2.0)
     damage_indexes = list()
     new_the_damage = sorted(the_damage)
     for i in range(len(new_the_damage)):
@@ -213,24 +214,18 @@ oppMon = ""
 while(True):
     for entry in driver.get_log('browser'):
         temp_value = str(entry).replace("\\", "")
-        print()
         value = dict()
         try:
             value = ast.literal_eval(temp_value)
         except:
             value = entry
-        #print(temp_value)
         for x, y in value.items():
             if(len(str(y)) > 500):
                 z = y[119:len(str(y))-1]
                 try:
                     mapthing = json.loads(z)
-                    print(mapthing['active'])
                     pkmn = mapthing['side']
-                    #print(pkmn_string)
                     pkmn2 = pkmn['pokemon']
-                    #for a, in pkmn2:
-                     #   print(a)
                     counter = 0
                     for index in pkmn2:
                         name = index['details'].split(',')[0]
@@ -258,13 +253,7 @@ while(True):
                         spd = stats['spd']
                         spe = stats['spe']
                         myPokemon[counter] = Pokemon(name, level, gender, moves2, ability, item, max_hp, hp, atk, defe, spa, spd, spe)
-                        #myPokemon[counter].print()
-                        print()
-                        
                         counter = counter + 1
-                    print()
-                    print()
-                    
                 except Exception as e:
                     mapthing = dict()
                     print(e)
@@ -297,7 +286,7 @@ while(True):
                             enemy_level = int(temp_test_string[temp_test_string.find(", L") + 3: temp_test_string.find(", L") + 6])
                         except:
                             enemy_level = int(temp_test_string[temp_test_string.find(", L") + 3: temp_test_string.find(", L") + 5])
-                        print("Enemy Level: ", enemy_level)
+                        if(general_debug): print("Enemy Level: ", enemy_level)
                 else:
                     oppMon = p1A
                     temp_test_string = str(y)[str(y).find("|p1a: "):]
@@ -306,16 +295,14 @@ while(True):
                             enemy_level = int(temp_test_string[temp_test_string.find(", L") + 3: temp_test_string.find(", L") + 6])
                         except:
                             enemy_level = int(temp_test_string[temp_test_string.find(", L") + 3: temp_test_string.find(", L") + 5])
-                        print("Enemy Level: ", enemy_level)
+                        if(general_debug): print("Enemy Level: ", enemy_level)
                 for the_pokemon in pokemons:
                     if(the_pokemon.name == oppMon or the_pokemon.name[:len(the_pokemon.name)-1] == oppMon):
                         enemy_pokemon = the_pokemon
                         break
-                print(enemy_pokemon.name)
-                print(enemy_pokemon.types)
-                #moves[0].print()
+                if(general_debug): print(enemy_pokemon.name)
+                if(general_debug): print(enemy_pokemon.types)
                 page_source = driver.page_source
-                print(page_source)
                 while(page_source.find("<div class=\"movemenu\"") == -1):
                     page_source = driver.page_source
                 page_source = page_source[page_source.find("<div class=\"movemenu\""):]
@@ -327,28 +314,25 @@ while(True):
                         disabled_moves.append(False)
                     page_source = page_source[1:]
                     page_source = page_source[page_source.find("</button>") + 9:]
-                #print(page_source)
                 move_indexes = calculate(myPokemon[0], enemy_pokemon)
                 move_index = move_indexes[0]
                 move_decrement = 0
                 for i in range(len(disabled_moves)):
                     if(disabled_moves[i] and move_index > i):
                         move_decrement += 1
-                print("Moves: ", move_indexes)
-                print(disabled_moves)
+                if(general_debug): print("Moves: ", move_indexes)
+                if(general_debug): print(disabled_moves)
                 for i in range(len(move_indexes)):
                     move_index = move_indexes[i]
-                    print("TRAPPED IN LOOP")
                     if(disabled_moves[i] == False):
                         break
-                print("Move before: ", move_index)
+                if(general_debug): print("Move before: ", move_index)
                 move_index -= move_decrement
-                print("Move after: ", move_index)
+                if(general_debug): print("Move after: ", move_index)
                 while(True):
                   try: 
                     driver.find_elements_by_name('chooseMove')[move_index].click()
                     break
                   except:
                     pass
-            if(console_debug):
-                print(x, y)
+            if(console_debug): print(x, y)
