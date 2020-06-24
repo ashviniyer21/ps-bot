@@ -10,52 +10,9 @@ import lxml.html as lh
 from pokemon import EnemyPokemon
 from move import Move
 from pokemon import Pokemon
+from pokemon import get_all_pokemon
 
-
-url='https://pokemondb.net/pokedex/all'
-page = requests.get(url)
-text = page.text
-index1 = text.find("<table")
-index2 = text.find("</table>") + 8
-s = text[index1:index2]
-pokemons = list()
-s = s[806:]
-index = 0
-while(s.find("<tr>") != -1):
-    o_index = s.find("</tr>") + 5
-    temp = s[:o_index]
-    s = s[o_index:]
-    new_index1 = temp.find("data-alt=\"") + 10
-    new_index2 = temp.find(" icon\">")
-    name = temp[new_index1: new_index2]
-    new_index2 = temp.find("</a>") + 4
-    temp = temp[new_index2:]
-    types = list()
-    while(temp.find("href=\"/type/") != -1):
-        new_index1 = temp.find("href=\"/type/") + 12
-        new_index2 = temp.find("</a>")
-        new_type = temp[new_index1: new_index2]
-        new_type = new_type[:int((len(new_type) - 2)/2)]
-        temp = temp[new_index2 + 4:]
-        types.append(new_type)
-    new_index2 = temp.find("</td>")
-    temp = temp[new_index2 + 4:]
-    new_index2 = temp.find("</td>")
-    temp = temp[new_index2 + 4:]
-    stats = list()
-    for i in range(6):
-        new_index1 = temp.find("<td class=\"cell-num\">") + 21
-        new_index2 = temp.find("</td>")
-        stats.append(int(temp[new_index1: new_index2]))
-        temp = temp[new_index2 + 4:]
-    pokemon = EnemyPokemon(name, types, stats)
-    pokemons.append(pokemon)
-    #if(index < 20):
-     #   pokemons[index].print()
-    index = index + 1
-
-
-
+pokemons = get_all_pokemon()
 
 enemy_pokemon = EnemyPokemon("HI", ["hi"], [0])
 enemy_level = 100
