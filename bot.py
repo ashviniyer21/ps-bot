@@ -7,68 +7,9 @@ import ast
 import json
 import requests, six
 import lxml.html as lh
-from enemy_pokemon import EnemyPokemon
-class Move:
-    def __init__(self, name, move_type, category, power, acc, pp, effect, prob, status_self, status_opponent, stats_self, stats_opponent):
-        self.name = name
-        self.move_type = move_type
-        self.category = category
-        self.power = power
-        self.acc = acc
-        self.pp = pp
-        self.effect = effect
-        self.prob = prob
-        self.status_self = status_self
-        self.status_opponent = status_opponent
-        self.stats_self = stats_self
-        self.stats_opponent = stats_opponent
-    def print(self):
-        print(self.name)
-        print(self.move_type)
-        print(self.category)
-        print(self.power)
-        print(self.acc)
-        print(self.pp)
-        print(self.effect)
-        print(self.prob)
-        print(self.status_self)
-        print(self.status_opponent)
-        print(self.stats_self)
-        print(self.stats_opponent)
-        print()
-        print()
-        print()
-class Pokemon:
-    def __init__(self, name, level, gender, moves, ability, item, max_hp, hp, attack, defense, special_attack, special_defense, speed):
-        self.name = name
-        self.level = level
-        self.gender = gender
-        self.moves = moves
-        self.ability = ability
-        self.item = item
-        self.max_hp = max_hp
-        self.hp = hp
-        self.attack = attack
-        self.defense = defense
-        self.special_attack = special_attack
-        self.special_defense = special_defense
-        self.speed = speed;
-    def set_hp(self, hp):
-        self.hp = hp
-    def print(self):
-        print("Name: ", self.name)
-        print("Level: ", self.level)
-        print("Gender: ", self.gender)
-        print("Moves: ", self.moves)
-        print("Ability: ", self.ability)
-        print("Item: ", self.item)
-        print("HP: ", self.hp, "/", self.max_hp)
-        print("Attack: ", self.attack)
-        print("Defense: ", self.defense)
-        print("SPA: ", self.special_attack)
-        print("SPD: ", self.special_defense)
-        print("SPEED: ", self.speed)
-
+from pokemon import EnemyPokemon
+from move import Move
+from pokemon import Pokemon
 
 
 url='https://pokemondb.net/pokedex/all'
