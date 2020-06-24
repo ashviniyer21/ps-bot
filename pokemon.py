@@ -49,7 +49,6 @@ def get_all_pokemon():
     s = text[index1:index2]
     pokemons = list()
     s = s[806:]
-    index = 0
     while(s.find("<tr>") != -1):
         o_index = s.find("</tr>") + 5
         temp = s[:o_index]
@@ -79,7 +78,10 @@ def get_all_pokemon():
             temp = temp[new_index2 + 4:]
         pokemon = EnemyPokemon(name, types, stats)
         pokemons.append(pokemon)
-    #if(index < 20):
-     #   pokemons[index].print()
-    index = index + 1
     return pokemons
+all_pokemon = get_all_pokemon()
+def get_pokemon(name):
+    for i in range(len(all_pokemon)):
+        if(all_pokemon[i].name == name):
+            return all_pokemon[i]
+    return all_pokemon[0]
