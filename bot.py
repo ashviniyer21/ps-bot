@@ -14,6 +14,8 @@ from move import get_move
 
 pokemons = get_all_pokemon()
 
+console_debug = False
+
 enemy_pokemon = EnemyPokemon("HI", ["hi"], [0])
 enemy_level = 100
 print("MOVES")
@@ -348,9 +350,5 @@ while(True):
                     break
                   except:
                     pass
-            print(x, y)
-        if(str(entry).find("battle-gen8randombattle") != -1):
-            gameStart = True
-        if(str(entry).find("moves") != -1 and initialize == False):
-            initialize = True
-            print("HERE")
+            if(console_debug):
+                print(x, y)
