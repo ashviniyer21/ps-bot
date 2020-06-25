@@ -1,9 +1,9 @@
-# ps-bot
+# PS-Bot
 Bot to play Pokemon Showdown for you
-## requirements
+## Requirements
 - [Selenium](https://selenium-python.readthedocs.io/installation.html)
 - [Chromedriver 84](https://chromedriver.chromium.org/downloads)
 - [Chromedriver binary](https://pypi.org/project/chromedriver-binary/)
-## how to use
+## How To Use
 - Download the repository
 - Run bot.py
