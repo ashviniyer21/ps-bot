@@ -12,11 +12,12 @@ from pokemon import get_all_pokemon
 from pokemon import get_pokemon
 from move import get_move
 from calculations import calculate
+import time
 pokemons = get_all_pokemon()
 
 console_debug = False
 
-general_debug = False
+general_debug = True
 
 enemy_pokemon = EnemyPokemon("HI", ["hi"], [0])
 enemy_level = 100
@@ -36,7 +37,9 @@ startPokemon = Pokemon("Blitzle", "L88", "F", ["1", "2", "3", "4"], "Motor Drive
 myPokemon = [startPokemon, startPokemon, startPokemon, startPokemon, startPokemon, startPokemon]
 count = 0;
 oppMon = ""
+should_skip = False
 while(True):
+    time.sleep(10)
     for entry in driver.get_log('browser'):
         temp_value = str(entry).replace("\\", "")
         value = dict()
@@ -141,23 +144,27 @@ while(True):
                     page_source = page_source[page_source.find("</button>") + 9:]
                 move_indexes = calculate(myPokemon[0], enemy_pokemon, enemy_level)
                 move_index = move_indexes[0]
+                for i in range(len(move_indexes)):
+                    move_index = move_indexes[i]
+                    if(disabled_moves[move_index] == False):
+                        break
                 move_decrement = 0
                 for i in range(len(disabled_moves)):
                     if(disabled_moves[i] and move_index > i):
                         move_decrement += 1
                 if(general_debug): print("Moves: ", move_indexes)
                 if(general_debug): print(disabled_moves)
-                for i in range(len(move_indexes)):
-                    move_index = move_indexes[i]
-                    if(disabled_moves[i] == False):
-                        break
                 if(general_debug): print("Move before: ", move_index)
                 move_index -= move_decrement
                 if(general_debug): print("Move after: ", move_index)
-                while(True):
-                  try: 
-                    driver.find_elements_by_name('chooseMove')[move_index].click()
-                    break
-                  except:
-                    pass
+                if(should_skip):
+                    should_skip = False
+                else:
+                    should_skip = True
+                    while(True):
+                        try: 
+                            driver.find_elements_by_name('chooseMove')[move_index].click()
+                            break
+                        except:
+                            pass
             if(console_debug): print(x, y)
