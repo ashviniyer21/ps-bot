@@ -187,10 +187,6 @@ def calculate(my_pokemon, enemy_pokemon, enemy_level):
     damage_indexes.reverse()
     return damage_indexes
 def calculate_random():
-    damage_indexes = list()
-    damage_indexes.append(0)
-    damage_indexes.append(1)
-    damage_indexes.append(2)
-    damage_indexes.append(3)
+    damage_indexes = list([0, 1, 2, 3])
     random.shuffle(damage_indexes)
     return damage_indexes
