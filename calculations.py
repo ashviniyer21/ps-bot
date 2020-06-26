@@ -3,6 +3,7 @@ from pokemon import Pokemon
 from pokemon import EnemyPokemon
 from move import get_move
 from pokemon import get_pokemon
+import random
 def calc_type_matchup(move_type, pokemon_types):
     chart = dict()
 
@@ -184,4 +185,12 @@ def calculate(my_pokemon, enemy_pokemon, enemy_level):
             if(new_the_damage[i] == the_damage[j] and not j in damage_indexes):
                 damage_indexes.append(j)
     damage_indexes.reverse()
+    return damage_indexes
+def calculate_random():
+    damage_indexes = list()
+    damage_indexes.append(0)
+    damage_indexes.append(1)
+    damage_indexes.append(2)
+    damage_indexes.append(3)
+    random.shuffle(damage_indexes)
     return damage_indexes

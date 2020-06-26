@@ -12,12 +12,15 @@ from pokemon import get_all_pokemon
 from pokemon import get_pokemon
 from move import get_move
 from calculations import calculate
+from calculations import calculate_random
 import time
 pokemons = get_all_pokemon()
 
 console_debug = False
 
 general_debug = True
+
+random_move = True
 
 enemy_pokemon = EnemyPokemon("HI", ["hi"], [0])
 enemy_level = 100
@@ -142,7 +145,8 @@ while(True):
                         disabled_moves.append(False)
                     page_source = page_source[1:]
                     page_source = page_source[page_source.find("</button>") + 9:]
-                move_indexes = calculate(myPokemon[0], enemy_pokemon, enemy_level)
+                if(not random_move): move_indexes = calculate(myPokemon[0], enemy_pokemon, enemy_level)
+                else: move_indexes = calculate_random()
                 move_index = move_indexes[0]
                 for i in range(len(move_indexes)):
                     move_index = move_indexes[i]
