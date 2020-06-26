@@ -166,6 +166,14 @@ def calculate(my_pokemon, enemy_pokemon, enemy_level):
                 stab = 1.5
             min_damage *= calc_type_matchup(temp_move.move_type, enemy_pokemon.types) * stab * 0.85
             max_damage *= calc_type_matchup(temp_move.move_type, enemy_pokemon.types) * stab
+        hp_min = (((2 * enemy_pokemon.stats[0]) * enemy_level)/100.0) + enemy_level + 10
+        hp_max = (((2 * enemy_pokemon.stats[0] + 31 + (252/4.0)) * enemy_level)/100.0) + enemy_level + 10
+        min_damage /= hp_max
+        min_damage *= 1000
+        min_damage = round(min_damage)/10.0
+        max_damage /= hp_min
+        max_damage *= 1000
+        max_damage = round(max_damage)/10.0
         print("Damage: ", temp_move.name)
         print("Min: ", min_damage, " Max: ", max_damage)
         the_damage.append((min_damage + max_damage)/2.0)
