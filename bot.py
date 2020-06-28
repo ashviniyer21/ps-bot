@@ -162,10 +162,10 @@ while(True):
                 if(general_debug): print("Move before: ", move_index)
                 move_index -= move_decrement
                 if(general_debug): print("Move after: ", move_index)
+            if(console_debug): print(x, y)
     while(True):
         try: 
             driver.find_elements_by_name('chooseMove')[move_index].click()
             break
         except:
             pass
-            if(console_debug): print(x, y)
