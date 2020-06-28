@@ -20,7 +20,7 @@ console_debug = False
 
 general_debug = True
 
-random_move = True
+random_move = False
 
 enemy_pokemon = EnemyPokemon("HI", ["hi"], [0])
 enemy_level = 100
@@ -34,6 +34,7 @@ driver.get("https://play.pokemonshowdown.com/")
 gameStart = False
 initialize = False
 isP1 = False
+move_index = 0
 mapthing = dict()
 temp_map = dict()
 startPokemon = Pokemon("Blitzle", "L88", "F", ["1", "2", "3", "4"], "Motor Drive", "Choice Band", 1, 1, 1, 1, 1, 1, 1)
@@ -161,14 +162,10 @@ while(True):
                 if(general_debug): print("Move before: ", move_index)
                 move_index -= move_decrement
                 if(general_debug): print("Move after: ", move_index)
-                if(should_skip):
-                    should_skip = False
-                else:
-                    should_skip = True
-                    while(True):
-                        try: 
-                            driver.find_elements_by_name('chooseMove')[move_index].click()
-                            break
-                        except:
-                            pass
+    while(True):
+        try: 
+            driver.find_elements_by_name('chooseMove')[move_index].click()
+            break
+        except:
+            pass
             if(console_debug): print(x, y)
