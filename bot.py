@@ -41,7 +41,8 @@ startPokemon = Pokemon("Blitzle", "L88", "F", ["1", "2", "3", "4"], "Motor Drive
 myPokemon = [startPokemon, startPokemon, startPokemon, startPokemon, startPokemon, startPokemon]
 count = 0;
 oppMon = ""
-should_skip = False
+should_skip = True
+can_start = False
 while(True):
     time.sleep(10)
     for entry in driver.get_log('browser'):
@@ -86,12 +87,14 @@ while(True):
                         spe = stats['spe']
                         myPokemon[counter] = Pokemon(name, level, gender, moves2, ability, item, max_hp, hp, atk, defe, spa, spd, spe)
                         counter = counter + 1
+                        can_start = True
                 except Exception as e:
                     mapthing = dict()
                     print(e)
                 
             if(str(y).find("|p1a: ") != -1 or str(y).find("|p2a: ") != -1):
                 values = str(y).split("|")
+                print(values)
                 p1A = ""
                 p2A = ""
                 found1 = False
@@ -128,6 +131,7 @@ while(True):
                         except:
                             enemy_level = int(temp_test_string[temp_test_string.find(", L") + 3: temp_test_string.find(", L") + 5])
                         if(general_debug): print("Enemy Level: ", enemy_level)
+                print(oppMon)
                 for the_pokemon in pokemons:
                     if(the_pokemon.name == oppMon or the_pokemon.name[:len(the_pokemon.name)-1] == oppMon):
                         enemy_pokemon = the_pokemon
@@ -163,13 +167,14 @@ while(True):
                 move_index -= move_decrement
                 if(general_debug): print("Move after: ", move_index)
             if(console_debug): print(x, y)
-    if(should_skip):
-        should_skip = False
-    else:
-        should_skip = True
-        while(True):
-            try: 
-                driver.find_elements_by_name('chooseMove')[move_index].click()
-                break
-            except:
-                pass
+    if(can_start):
+        if(should_skip):
+            should_skip = False
+        else:
+            should_skip = True
+            while(True):
+                try: 
+                    driver.find_elements_by_name('chooseMove')[move_index].click()
+                    break
+                except:
+                    pass
