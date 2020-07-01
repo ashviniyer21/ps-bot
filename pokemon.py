@@ -56,6 +56,12 @@ def get_all_pokemon():
         new_index1 = temp.find("data-alt=\"") + 10
         new_index2 = temp.find(" icon\">")
         name = temp[new_index1: new_index2]
+        if(name.find("Alolan ") != -1):
+            name = name[name.find("Alolan ") + 7:]
+            name += "-Alola"
+        if(name.find("Galarian ") != -1):
+            name = name[name.find("Galarian ") + 9:]
+            name += "-Galar"
         new_index2 = temp.find("</a>") + 4
         temp = temp[new_index2:]
         types = list()
