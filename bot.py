@@ -123,7 +123,7 @@ while(True):
                             two_mon_temp = values[value+2].split(",")[0]
                 print("P1: ", one_mon_temp, " P2: ", two_mon_temp)
                 if(isP1):
-                    oppMon = p2A
+                    oppMon = two_mon_temp
                     temp_test_string = str(y)[str(y).find("|p2a: "):]
                     if(temp_test_string.find(", L") > temp_test_string.find("|p2a: ")):
                         try:
@@ -132,7 +132,7 @@ while(True):
                             enemy_level = int(temp_test_string[temp_test_string.find(", L") + 3: temp_test_string.find(", L") + 5])
                         if(general_debug): print("Enemy Level: ", enemy_level)
                 else:
-                    oppMon = p1A
+                    oppMon = one_mon_temp
                     temp_test_string = str(y)[str(y).find("|p1a: "):]
                     if(temp_test_string.find(", L") > temp_test_string.find("|p1a: ")):
                         try:
@@ -140,7 +140,6 @@ while(True):
                         except:
                             enemy_level = int(temp_test_string[temp_test_string.find(", L") + 3: temp_test_string.find(", L") + 5])
                         if(general_debug): print("Enemy Level: ", enemy_level)
-                print(oppMon)
                 for the_pokemon in pokemons:
                     if(the_pokemon.name == oppMon or the_pokemon.name[:len(the_pokemon.name)-1] == oppMon):
                         enemy_pokemon = the_pokemon
