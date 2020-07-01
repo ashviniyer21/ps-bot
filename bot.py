@@ -43,6 +43,8 @@ count = 0;
 oppMon = ""
 should_skip = True
 can_start = False
+one_mon_temp = ""
+two_mon_temp = ""
 while(True):
     time.sleep(10)
     for entry in driver.get_log('browser'):
@@ -113,6 +115,13 @@ while(True):
                             isP1 = True
                             break
                     already_finding = True
+                for value in range(len(values)):
+                    if(values[value].find("switch") != -1 and value + 2 < len(values)):
+                        if(values[value + 1].find("p1a: ") != -1):
+                            one_mon_temp = values[value+2].split(",")[0]
+                        elif(values[value + 1].find("p2a: ") != -1):
+                            two_mon_temp = values[value+2].split(",")[0]
+                print("P1: ", one_mon_temp, " P2: ", two_mon_temp)
                 if(isP1):
                     oppMon = p2A
                     temp_test_string = str(y)[str(y).find("|p2a: "):]
