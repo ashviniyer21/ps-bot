@@ -159,8 +159,13 @@ def calculate(my_pokemon, enemy_pokemon, enemy_level):
             def_max += 5
             def_max *= 1.1
         if(temp_move.category != "status"):
-            min_damage = 2 + ((temp_move.power * atk/def_max * (2 + (2 * my_pokemon.level/5.0)))/50.0)
-            max_damage = 2 + ((temp_move.power * atk/def_min * (2 + (2 * my_pokemon.level/5.0)))/50.0)
+            used_level = 0
+            try:
+                used_level = int(my_pokemon.level)
+            except:
+                used_level = 100
+            min_damage = 2 + ((temp_move.power * atk/def_max * (2 + (2 * used_level/5.0)))/50.0)
+            max_damage = 2 + ((temp_move.power * atk/def_min * (2 + (2 * used_level/5.0)))/50.0)
             stab = 1.0
             quick_testing_types = get_pokemon(my_pokemon.name).types
             if(temp_move.move_type in quick_testing_types):
