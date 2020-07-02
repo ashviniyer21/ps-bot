@@ -28,9 +28,9 @@ print("STARTING")
 
 d = DesiredCapabilities.CHROME
 d['goog:loggingPrefs'] = { 'browser':'ALL' }
-already_finding = False
 driver = webdriver.Chrome(desired_capabilities=d)
 driver.get("https://play.pokemonshowdown.com/")
+already_finding = False
 gameStart = False
 initialize = False
 isP1 = False
