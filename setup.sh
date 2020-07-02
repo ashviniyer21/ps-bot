@@ -1,5 +1,5 @@
 #!/bin/bash
-chmod +x setup.sh
+#chmod +x setup.sh
 which pip
 echo "Installing libraries"
 pip install selenium
