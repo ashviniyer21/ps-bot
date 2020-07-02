@@ -13,7 +13,7 @@ d = DesiredCapabilities.CHROME
 d['goog:loggingPrefs'] = { 'browser':'ALL' }
 driver = webdriver.Chrome(desired_capabilities=d)
 ```
-to whatever code is needed for your browser
+in bot.py to whatever code is needed for your browser
 ## How To Use
 - Download the repository
 - Run bot.py
