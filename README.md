@@ -8,4 +8,4 @@ Bot to play Pokemon Showdown for you
 
 ## How To Use
 - Download the repository
-- Run bot.pyi
+- Run bot.py
