@@ -45,6 +45,7 @@ should_skip = True
 can_start = False
 one_mon_temp = ""
 two_mon_temp = ""
+start_len = -1
 while(True):
     time.sleep(10)
     for entry in driver.get_log('browser'):
@@ -158,6 +159,8 @@ while(True):
                         disabled_moves.append(False)
                     page_source = page_source[1:]
                     page_source = page_source[page_source.find("</button>") + 9:]
+                if(start_len == -1):
+                    start_len = len(disabled_moves)
                 if(not random_move): move_indexes = calculate(myPokemon[0], enemy_pokemon, enemy_level)
                 else: move_indexes = calculate_random()
                 move_index = move_indexes[0]
@@ -174,6 +177,8 @@ while(True):
                 if(general_debug): print("Move before: ", move_index)
                 move_index -= move_decrement
                 if(general_debug): print("Move after: ", move_index)
+                if(len(disabled_moves) != start_len):
+                    move_index = 0
             if(console_debug): print(x, y)
     if(can_start):
         if(should_skip):
