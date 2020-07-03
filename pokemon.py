@@ -78,4 +78,3 @@ def get_pokemon(name):
         if(all_pokemon[i].name == name):
             return all_pokemon[i]
     return all_pokemon[0]
-get_pokemon("charmander").print()
