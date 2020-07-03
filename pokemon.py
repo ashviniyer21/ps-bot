@@ -1,13 +1,15 @@
 import requests
 class EnemyPokemon:
-    def __init__(self, name, types, stats):
+    def __init__(self, name, types, stats, abilities):
         self.name = name
         self.types = types
         self.stats = stats
+        self.abilities = abilities
     def print(self):
         print("Name: ", self.name)
         print("Types: ", self.types)
         print("Stats: ", self.stats)
+        print("Abilities: ", self.abilities)
 
 class Pokemon:
     def __init__(self, name, level, gender, moves, ability, item, max_hp, hp, attack, defense, special_attack, special_defense, speed):
@@ -70,7 +72,15 @@ def get_all_pokemon():
         stats = list()
         for stat in stats_temp:
             stats.append(int(stat[stat.find(":") + 1:]))
-        pokemons.append(EnemyPokemon(name, types, stats))
+        index1 = text.find("abilities:")
+        text = text[index1 + 11:]
+        index2 = text.find("},")
+        ability_string = text[:index2].split(",")
+        abilities = list()
+        for ability in ability_string:
+            ability = ability.replace("\"", "")
+            abilities.append(ability[ability.find(":") + 1:])
+        pokemons.append(EnemyPokemon(name, types, stats, abilities))
     return pokemons
 all_pokemon = get_all_pokemon()
 def get_pokemon(name):
@@ -78,3 +88,4 @@ def get_pokemon(name):
         if(all_pokemon[i].name == name):
             return all_pokemon[i]
     return all_pokemon[0]
+get_pokemon("Charmander").print()
