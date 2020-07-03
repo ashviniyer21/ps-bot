@@ -166,7 +166,7 @@ while(True):
                 move_index = move_indexes[0]
                 for i in range(len(move_indexes)):
                     move_index = move_indexes[i]
-                    if(disabled_moves[move_index] == False):
+                    if(len(disabled_moves) > move_index and disabled_moves[move_index] == False):
                         break
                 move_decrement = 0
                 for i in range(len(disabled_moves)):
