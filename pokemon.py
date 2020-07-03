@@ -39,51 +39,38 @@ class Pokemon:
         print("SPA: ", self.special_attack)
         print("SPD: ", self.special_defense)
         print("SPEED: ", self.speed)
-
 def get_all_pokemon():
-    url='https://pokemondb.net/pokedex/all'
+    pokemons = list()
+    url='http://play.pokemonshowdown.com/data/pokedex.js'
     page = requests.get(url)
     text = page.text
-    index1 = text.find("<table")
-    index2 = text.find("</table>") + 8
-    s = text[index1:index2]
-    pokemons = list()
-    s = s[806:]
-    while(s.find("<tr>") != -1):
-        o_index = s.find("</tr>") + 5
-        temp = s[:o_index]
-        s = s[o_index:]
-        new_index1 = temp.find("data-alt=\"") + 10
-        new_index2 = temp.find(" icon\">")
-        name = temp[new_index1: new_index2]
-        if(name.find("Alolan ") != -1):
-            name = name[name.find("Alolan ") + 7:]
-            name += "-Alola"
-        if(name.find("Galarian ") != -1):
-            name = name[name.find("Galarian ") + 9:]
-            name += "-Galar"
-        new_index2 = temp.find("</a>") + 4
-        temp = temp[new_index2:]
-        types = list()
-        while(temp.find("href=\"/type/") != -1):
-            new_index1 = temp.find("href=\"/type/") + 12
-            new_index2 = temp.find("</a>")
-            new_type = temp[new_index1: new_index2]
-            new_type = new_type[:int((len(new_type) - 2)/2)]
-            temp = temp[new_index2 + 4:]
-            types.append(new_type)
-        new_index2 = temp.find("</td>")
-        temp = temp[new_index2 + 4:]
-        new_index2 = temp.find("</td>")
-        temp = temp[new_index2 + 4:]
+    text = text[24:len(text)-1]
+    counter = 0
+    while(text.find("name:\"") != -1):
+        index1 = text.find("name:\"")
+        text = text[index1:]
+        index1 = text.find("name:\"") + 6
+        index2 = text.find("\",")
+        name = text[index1:index2]
+        index1 = text.find("types:")
+        text = text[index1:]
+        index1 = text.find("types:") + 7
+        index2 = text.find("\"],") + 1
+        type_string = text[index1: index2]
+        type_string = type_string.replace("\"", "")
+        types = type_string.split(",")
+        for i in range(len(types)):
+            types[i] = types[i].lower()
+        index1 = text.find("baseStats:")
+        text = text[index1 + 10:]
+        index2 = text.find("},") + 1
+        stats_string = text[:index2]
+        stats_string = stats_string[1: len(stats_string)-1]
+        stats_temp = stats_string.split(",")
         stats = list()
-        for i in range(6):
-            new_index1 = temp.find("<td class=\"cell-num\">") + 21
-            new_index2 = temp.find("</td>")
-            stats.append(int(temp[new_index1: new_index2]))
-            temp = temp[new_index2 + 4:]
-        pokemon = EnemyPokemon(name, types, stats)
-        pokemons.append(pokemon)
+        for stat in stats_temp:
+            stats.append(int(stat[stat.find(":") + 1:]))
+        pokemons.append(EnemyPokemon(name, types, stats))
     return pokemons
 all_pokemon = get_all_pokemon()
 def get_pokemon(name):
@@ -91,3 +78,4 @@ def get_pokemon(name):
         if(all_pokemon[i].name == name):
             return all_pokemon[i]
     return all_pokemon[0]
+get_pokemon("charmander").print()
