@@ -22,7 +22,7 @@ general_debug = True
 
 random_move = False
 
-enemy_pokemon = EnemyPokemon("HI", ["hi"], [0])
+enemy_pokemon = EnemyPokemon("HI", ["hi"], [0], "Hi")
 enemy_level = 100
 print("STARTING")
 
