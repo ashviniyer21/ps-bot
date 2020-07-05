@@ -1,31 +1,27 @@
 import requests
 class Move:
-    def __init__(self, name, move_type, category, power, acc, pp, effect, prob, status_self, status_opponent, stats_self, stats_opponent):
+    def __init__(self, name, move_type, category, power, acc, effect, status, stats, priority, num_hit):
         self.name = name
         self.move_type = move_type
         self.category = category
         self.power = power
         self.acc = acc
-        self.pp = pp
         self.effect = effect
-        self.prob = prob
-        self.status_self = status_self
-        self.status_opponent = status_opponent
-        self.stats_self = stats_self
-        self.stats_opponent = stats_opponent
+        self.status = status
+        self.stats = stats
+        self.priority = priority
+        self.num_hit = num_hit
     def print(self):
         print(self.name)
         print(self.move_type)
         print(self.category)
         print(self.power)
         print(self.acc)
-        print(self.pp)
         print(self.effect)
-        print(self.prob)
-        print(self.status_self)
-        print(self.status_opponent)
-        print(self.stats_self)
-        print(self.stats_opponent)
+        print(self.status)
+        print(self.stats)
+        print(self.priority)
+        print(self.num_hit)
         print()
         print()
         print()
@@ -35,6 +31,7 @@ def get_all_moves():
     text = page.text[24:]
     text = text[:len(text)-1]
     counter = 0
+    moves = list()
     while(text.find("accuracy:") != -1):
         index1 = text.find("accuracy:")
         text = text[index1:]
@@ -97,7 +94,11 @@ def get_all_moves():
             text = text[index1:]
             index1 = text.find("multihit:") + 9
             index2 = text.find(",")
-            num_hit = int(text[index1:index2])
+            try:
+                num_hit = int(text[index1:index2])
+            except:
+                num_hit = 3
+        status = ""
         if(text.find("status:") < text.find(",type:\"") and text.find("status:") != -1):
             index1 = text.find("status:")
             text = text[index1:]
@@ -110,21 +111,26 @@ def get_all_moves():
         index1 = text.find("type:\"") + 6
         index2 = text.find("\",")
         move_type = text[index1:index2].lower()
-        if(counter < 20):
-            print(accuracy)
-            print(power)
-            print(category)
-            print(description)
-            print(name)
-            print(priority)
-            print(boosts)
-            print(secondary_text)
-            print(move_type)
-            print()
+        #if(counter < 20):
+         #   print(accuracy)
+          #  print(power)
+           # print(category)
+            #print(description)
+            #print(name)
+            #print(priority)
+            #print(boosts)
+            #print(secondary_text)
+            #print(move_type)
+            #print(status)
+            #print()
         counter += 1
+        moves.append(Move(name, move_type, category, power, accuracy, "", status, boosts, priority, num_hit))
+    return moves
 all_moves = get_all_moves()
 def get_move(name):
+    name = name.replace(" ", "")
     for i in range(len(all_moves)):
         if(all_moves[i].name.lower().replace(" ", "").replace("-", "") == name.lower() or all_moves[i].name.lower().replace(" ", "").replace("-", "") == name[:len(name)-1].lower()):
             return all_moves[i]
     return all_moves[0]
+get_move("Thunder Wave").print()
