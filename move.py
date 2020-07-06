@@ -1,12 +1,12 @@
 import requests
 class Move:
-    def __init__(self, name, move_type, category, power, acc, effect, status, stats, priority, num_hit):
+    def __init__(self, name, move_type, category, power, acc, target, status, stats, priority, num_hit):
         self.name = name
         self.move_type = move_type
         self.category = category
         self.power = power
         self.acc = acc
-        self.effect = effect
+        self.target = target
         self.status = status
         self.stats = stats
         self.priority = priority
@@ -17,7 +17,7 @@ class Move:
         print(self.category)
         print(self.power)
         print(self.acc)
-        print(self.effect)
+        print(self.target)
         print(self.status)
         print(self.stats)
         print(self.priority)
@@ -106,6 +106,11 @@ def get_all_moves():
             index2 = text.find(",")
             status = text[index1:index2]
         index2 = text.find("},")
+        index1 = text.find("target:\"")
+        text = text[index1:]
+        index1 = text.find("target:\"") + 8
+        index2 = text.find("\",")
+        target = text[index1:index2]
         index1 = text.find(",type:\"") + 1
         text = text[index1:]
         index1 = text.find("type:\"") + 6
@@ -124,7 +129,7 @@ def get_all_moves():
             #print(status)
             #print()
         counter += 1
-        moves.append(Move(name, move_type, category, power, accuracy, "", status, boosts, priority, num_hit))
+        moves.append(Move(name, move_type, category, power, accuracy, target, status, boosts, priority, num_hit))
     return moves
 all_moves = get_all_moves()
 def get_move(name):
@@ -133,3 +138,4 @@ def get_move(name):
         if(all_moves[i].name.lower().replace(" ", "").replace("-", "") == name.lower() or all_moves[i].name.lower().replace(" ", "").replace("-", "") == name[:len(name)-1].lower()):
             return all_moves[i]
     return all_moves[0]
+get_move("Thunder Wave").print()
