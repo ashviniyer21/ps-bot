@@ -89,7 +89,7 @@ def get_all_moves():
                 elif(boost_values[0] == "spe"):
                     boosts[4] = int(boost_values[1])
         num_hit = 1
-        if(text.find("multihit:") < text.find(",type:\"") and text.find("multihit:") != -1):
+        if(text.find("multihit:") < text.find(",type:\"") and text.find("multihit:") != -1 and text.find("multihit:") < text.find("secondary:")):
             index1 = text.find("multihit:")
             text = text[index1:]
             index1 = text.find("multihit:") + 9
@@ -98,8 +98,8 @@ def get_all_moves():
                 num_hit = int(text[index1:index2])
             except:
                 num_hit = 3
-        status = ""
-        if(text.find("status:") < text.find(",type:\"") and text.find("status:") != -1):
+        status = "none"
+        if(text.find("status:") < text.find(",type:\"") and text.find("status:") != -1 and text.find("status:") < text.find("secondary:")):
             index1 = text.find("status:")
             text = text[index1:]
             index1 = text.find("status:") + 7
@@ -133,4 +133,3 @@ def get_move(name):
         if(all_moves[i].name.lower().replace(" ", "").replace("-", "") == name.lower() or all_moves[i].name.lower().replace(" ", "").replace("-", "") == name[:len(name)-1].lower()):
             return all_moves[i]
     return all_moves[0]
-get_move("Thunder Wave").print()
