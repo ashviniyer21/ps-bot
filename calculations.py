@@ -138,23 +138,23 @@ def calculate(my_pokemon, enemy_pokemon, enemy_level):
         def_max = 0.0
         min_damage = 0.0
         max_damage = 0.0
-        if(temp_move.category == "physical"):
+        if(temp_move.category == "Physical"):
             atk = my_pokemon.attack
-            def_min = (2 * enemy_pokemon.stats[2] + 31 + 85/4.0) * enemy_level
+            def_min = int((2 * enemy_pokemon.stats[2] + 31 + 85/4.0) * enemy_level)
             def_min /= 100.0
             def_min += 5
-            def_max = (2 * enemy_pokemon.stats[2] + 31 + 85/4.0) * enemy_level
+            def_max = int((2 * enemy_pokemon.stats[2] + 31 + 85/4.0) * enemy_level)
             def_max /= 100.0
             def_max += 5
-        elif(temp_move.category == "special"):
+        elif(temp_move.category == "Special"):
             atk = my_pokemon.special_attack
-            def_min = (2 * enemy_pokemon.stats[4] + 31 + 85/4.0) * enemy_level
+            def_min = int((2 * enemy_pokemon.stats[4] + 31 + 85/4.0) * enemy_level)
             def_min /= 100.0
             def_min += 5
             def_max = int((2 * enemy_pokemon.stats[4] + 31 + 85/4.0) * enemy_level)
             def_max /= 100.0
             def_max += 5
-        if(temp_move.category != "status"):
+        if(temp_move.category != "Status"):
             used_level = 0
             try:
                 used_level = int(my_pokemon.level)
@@ -166,9 +166,9 @@ def calculate(my_pokemon, enemy_pokemon, enemy_level):
             quick_testing_types = get_pokemon(my_pokemon.name).types
             if(temp_move.move_type in quick_testing_types):
                 stab = 1.5
-            min_damage *= calc_type_matchup(temp_move.move_type, enemy_pokemon.types) * stab * 0.85
-            max_damage *= calc_type_matchup(temp_move.move_type, enemy_pokemon.types) * stab
-        hp_min = (((2 * enemy_pokemon.stats[0] + 31) * enemy_level)/100.0) + enemy_level + 10
+            min_damage *= calc_type_matchup(temp_move.move_type, enemy_pokemon.types) * stab * 0.85 * temp_move.num_hit
+            max_damage *= calc_type_matchup(temp_move.move_type, enemy_pokemon.types) * stab * temp_move.num_hit
+        hp_min = (((2 * enemy_pokemon.stats[0] + 31 + (85/4.0)) * enemy_level)/100.0) + enemy_level + 10
         hp_max = (((2 * enemy_pokemon.stats[0] + 31 + (85/4.0)) * enemy_level)/100.0) + enemy_level + 10
         min_damage /= hp_max
         min_damage *= 1000
