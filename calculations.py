@@ -126,7 +126,7 @@ def calc_type_matchup(move_type, pokemon_types):
             return 0
     return mult
 
-def calculate(my_pokemon, enemy_pokemon, enemy_level):
+def basic_calculate(my_pokemon, enemy_pokemon, enemy_level):
     best = 0
     the_damage = list()
     index = 0
@@ -187,6 +187,61 @@ def calculate(my_pokemon, enemy_pokemon, enemy_level):
                 damage_indexes.append(j)
     damage_indexes.reverse()
     return damage_indexes
+
+def advance_calculate(my_pokemon, enemy_pokemon, enemy_level):
+    damage_values = list()
+    for move in my_pokemon.moves:
+        actual_move = get_move(move)
+        damage = {0, 0}
+        damage1 = 0
+        damage2 = 0
+        level = 100
+        try:
+            level = int(enemy_level)
+        except:
+            pass
+        if(actual_move.category != "Status"):
+            attack = 0
+            defense = 0
+            if(actual_move.category == "Physical"):
+                attack = my_pokemon.attack
+                defense = float(round((2 * enemy_pokemon.stats[2] + 31 + 85/4.0) * level))
+            elif(actual_move.category == "Special"):
+                attack = my_pokemon.special_attack
+                defense = float(round((2 * enemy_pokemon.stats[4] + 31 + 85/4.0) * level))
+            defense /= 100.0
+            defense += 5
+            stab = 1
+            if(actual_move.move_type in get_pokemon(my_pokemon.name).types):
+                stab = 1.5
+            damage_reg = 2 + ((actual_move.power * attack/defense * (2 + (2 * level/5.0)))/50.0)
+            damage_reg *= calc_type_matchup(actual_move.move_type, enemy_pokemon.types) * stab * actual_move.num_hit
+            hp = float(round((((2 * enemy_pokemon.stats[0] + 31 + (85/4.0)) * level)/100.0) + level + 10))
+            damage1 = damage_reg * 0.85
+            damage1 /= hp
+            damage1 *= 1000.0
+            damage1 = round(damage1)
+            damage1 /= 10.0
+            damage2 = damage_reg
+            damage2 /= hp
+            damage2 *= 1000.0
+            damage2 = round(damage2)
+            damage2 /= 10.0
+            damage = {damage1, damage2}
+        damage_values.append((damage1+damage2)/2.0)
+    print(damage_values)
+    temp_damage = list()
+    for value in damage_values:
+        temp_damage.append(value)
+    temp_damage2 = sorted(temp_damage)
+    damage_indexes = list()
+    for i in range(len(temp_damage2)):
+        for j in range(len(temp_damage)):
+            if(temp_damage2[i] == temp_damage[j] and not j in damage_indexes):
+                damage_indexes.append(j)
+    damage_indexes = damage_indexes.reverse()
+    return damage_indexes
+
 def calculate_random():
     damage_indexes = list([0, 1, 2, 3])
     random.shuffle(damage_indexes)
