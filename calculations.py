@@ -205,9 +205,13 @@ def advance_calculate(my_pokemon, enemy_pokemon, enemy_level):
             defense = 0
             if(actual_move.category == "Physical"):
                 attack = my_pokemon.attack
+                if(my_pokemon.item.lower() == "choice band"):
+                    attack *= 1.5
                 defense = float(round((2 * enemy_pokemon.stats[2] + 31 + 85/4.0) * level))
             elif(actual_move.category == "Special"):
                 attack = my_pokemon.special_attack
+                if(my_pokemon.item.lower() == "choice specs"):
+                    attack *= 1.5
                 defense = float(round((2 * enemy_pokemon.stats[4] + 31 + 85/4.0) * level))
             defense /= 100.0
             defense += 5
@@ -216,6 +220,8 @@ def advance_calculate(my_pokemon, enemy_pokemon, enemy_level):
                 stab = 1.5
             damage_reg = 2 + ((actual_move.power * attack/defense * (2 + (2 * level/5.0)))/50.0)
             damage_reg *= calc_type_matchup(actual_move.move_type, enemy_pokemon.types) * stab * actual_move.num_hit
+            if(my_pokemon.item.lower() == "life orb"):
+                damage_reg *= 1.3
             hp = float(round((((2 * enemy_pokemon.stats[0] + 31 + (85/4.0)) * level)/100.0) + level + 10))
             damage1 = damage_reg * 0.85
             damage1 /= hp
