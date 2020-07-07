@@ -25,6 +25,7 @@ random_move = False
 
 enemy_pokemon = EnemyPokemon("HI", ["hi"], [0], "Hi")
 enemy_level = 100
+enemy_hp = 100
 print("STARTING")
 
 d = DesiredCapabilities.CHROME
@@ -47,6 +48,8 @@ can_start = False
 one_mon_temp = ""
 two_mon_temp = ""
 start_len = -1
+self_boosts = [0, 0, 0, 0, 0]
+opp_boosts = [0, 0, 0, 0, 0]
 while(True):
     time.sleep(10)
     for entry in driver.get_log('browser'):
@@ -121,8 +124,82 @@ while(True):
                     if(values[value].find("switch") != -1 and value + 2 < len(values)):
                         if(values[value + 1].find("p1a: ") != -1):
                             one_mon_temp = values[value+2].split(",")[0]
+                            if(isP1):
+                                self_boosts = [0, 0, 0, 0, 0]
+                            else:
+                                opp_boosts = [0, 0, 0, 0, 0]
+                                try:
+                                    enemy_hp = int(values[value+3].split("/")[0])
+                                except:
+                                    enemy_hp = 0
                         elif(values[value + 1].find("p2a: ") != -1):
                             two_mon_temp = values[value+2].split(",")[0]
+                            if(isP1):
+                                opp_boosts = [0, 0, 0, 0, 0]
+                                try:
+                                    enemy_hp = int(values[value+3].split("/")[0])
+                                except:
+                                    enemy_hp = 0
+                            else:
+                                self_boosts = [0, 0, 0, 0, 0]
+                    elif(values[value].find("-boost") != -1):
+                        temp_string = values[value+3]
+                        print("String INT TRY: ", temp_string[0:len(temp_string)-1])
+                        if((values[value+1].find("p1a: ") != -1 and isP1) or (values[value+1].find("p2a: ") != -1 and not isP1)):
+                            if(values[value+2] == "atk"):
+                                self_boosts[0] += int(values[value+3][0:len(values[value+3])-1])
+                            if(values[value+2] == "def"):
+                                self_boosts[1] += int(values[value+3][0:len(values[value+3])-1])
+                            if(values[value+2] == "spa"):
+                                self_boosts[2] += int(values[value+3][0:len(values[value+3])-1])
+                            if(values[value+2] == "spd"):
+                                self_boosts[3] += int(values[value+3][0:len(values[value+3])-1])
+                            if(values[value+2] == "spe"):
+                                self_boosts[4] += int(values[value+3][0:len(values[value+3])-1])
+                        else:
+                            if(values[value+2] == "atk"):
+                                opp_boosts[0] += int(values[value+3][0:len(values[value+3])-1])
+                            if(values[value+2] == "def"):
+                                opp_boosts[1] += int(values[value+3][0:len(values[value+3])-1])
+                            if(values[value+2] == "spa"):
+                                opp_boosts[2] += int(values[value+3][0:len(values[value+3])-1])
+                            if(values[value+2] == "spd"):
+                                opp_boosts[3] += int(values[value+3][0:len(values[value+3])-1])
+                            if(values[value+2] == "spe"):
+                                opp_boosts[4] += int(values[value+3][0:len(values[value+3])-1])
+                    elif(values[value].find("-unboost") != -1):
+                        if((values[value+1].find("p1a: ") != -1 and isP1) or (values[value+1].find("p2a: ") != -1 and not isP1)):
+                            if(values[value+2] == "atk"):
+                                self_boosts[0] -= int(values[value+3][0:len(values[value+3])-1])
+                            if(values[value+2] == "def"):
+                                self_boosts[1] -= int(values[value+3][0:len(values[value+3])-1])
+                            if(values[value+2] == "spa"):
+                                self_boosts[2] -= int(values[value+3][0:len(values[value+3])-1])
+                            if(values[value+2] == "spd"):
+                                self_boosts[3] -= int(values[value+3][0:len(values[value+3])-1])
+                            if(values[value+2] == "spe"):
+                                self_boosts[4] -= int(values[value+3][0:len(values[value+3])-1])
+                        else:
+                            if(values[value+2] == "atk"):
+                                opp_boosts[0] -= int(values[value+3][0:len(values[value+3])-1])
+                            if(values[value+2] == "def"):
+                                opp_boosts[1] -= int(values[value+3][0:len(values[value+3])-1])
+                            if(values[value+2] == "spa"):
+                                opp_boosts[2] -= int(values[value+3][0:len(values[value+3])-1])
+                            if(values[value+2] == "spd"):
+                                opp_boosts[3] -= int(values[value+3][0:len(values[value+3])-1])
+                            if(values[value+2] == "spe"):
+                                opp_boosts[4] -= int(values[value+3][0:len(values[value+3])-1])
+                    elif(values[value].find("-damage") != -1):
+                        if((values[value+1].find("p1a: ") != -1 and not isP1) or (values[value+1].find("p2a: ") != -1 and isP1)):
+                            try:
+                                enemy_hp = int(values[value+2].split("/")[0])
+                            except:
+                                enemy_hp = 0
+                    for i in range(5):
+                        self_boosts[i] = min(6, max(-6, self_boosts[i]))
+                        opp_boosts[i] = min(6, max(-6, opp_boosts[i]))
+                    print(values[value])
                 print("P1: ", one_mon_temp, " P2: ", two_mon_temp)
                 if(isP1):
                     oppMon = two_mon_temp
@@ -133,6 +210,9 @@ while(True):
                         except:
                             enemy_level = int(temp_test_string[temp_test_string.find(", L") + 3: temp_test_string.find(", L") + 5])
                         if(general_debug): print("Enemy Level: ", enemy_level)
+                        if(general_debug): print("Enemy HP: ", enemy_hp)
+                        if(general_debug): print("Self Boosts: ", self_boosts)
+                        if(general_debug): print("Opp Boosts: ", opp_boosts)
                 else:
                     oppMon = one_mon_temp
                     temp_test_string = str(y)[str(y).find("|p1a: "):]
@@ -142,6 +222,9 @@ while(True):
                         except:
                             enemy_level = int(temp_test_string[temp_test_string.find(", L") + 3: temp_test_string.find(", L") + 5])
                         if(general_debug): print("Enemy Level: ", enemy_level)
+                        if(general_debug): print("Enemy HP: ", enemy_hp)
+                        if(general_debug): print("Self Boosts: ", self_boosts)
+                        if(general_debug): print("Opp Boosts: ", opp_boosts)
                 for the_pokemon in pokemons:
                     if(the_pokemon.name == oppMon or the_pokemon.name[:len(the_pokemon.name)-1] == oppMon):
                         enemy_pokemon = the_pokemon

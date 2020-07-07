@@ -207,12 +207,12 @@ def advance_calculate(my_pokemon, enemy_pokemon, enemy_level):
                 attack = my_pokemon.attack
                 if(my_pokemon.item.lower() == "choice band"):
                     attack *= 1.5
-                defense = float(round((2 * enemy_pokemon.stats[2] + 31 + 85/4.0) * level))
+                defense = round((2 * enemy_pokemon.stats[2] + 31 + 85/4.0) * level)
             elif(actual_move.category == "Special"):
                 attack = my_pokemon.special_attack
                 if(my_pokemon.item.lower() == "choice specs"):
                     attack *= 1.5
-                defense = float(round((2 * enemy_pokemon.stats[4] + 31 + 85/4.0) * level))
+                defense = round((2 * enemy_pokemon.stats[4] + 31 + 85/4.0) * level)
             defense /= 100.0
             defense += 5
             stab = 1
@@ -222,7 +222,7 @@ def advance_calculate(my_pokemon, enemy_pokemon, enemy_level):
             damage_reg *= calc_type_matchup(actual_move.move_type, enemy_pokemon.types) * stab * actual_move.num_hit
             if(my_pokemon.item.lower() == "life orb"):
                 damage_reg *= 1.3
-            hp = float(round((((2 * enemy_pokemon.stats[0] + 31 + (85/4.0)) * level)/100.0) + level + 10))
+            hp = round((((2 * enemy_pokemon.stats[0] + 31 + (85/4.0)) * level)/100.0) + level + 10)
             damage1 = damage_reg * 0.85
             damage1 /= hp
             damage1 *= 1000.0
@@ -234,8 +234,10 @@ def advance_calculate(my_pokemon, enemy_pokemon, enemy_level):
             damage2 = round(damage2)
             damage2 /= 10.0
             damage = {damage1, damage2}
-        damage_values.append((damage1+damage2)/2.0)
-    print(damage_values)
+        print(move)
+        print("Damage1: ", damage1, " Damage2: ", damage2)
+        damage_values.append(damage2)
+    #print(damage_values)
     temp_damage = list()
     for value in damage_values:
         temp_damage.append(value)
@@ -245,7 +247,7 @@ def advance_calculate(my_pokemon, enemy_pokemon, enemy_level):
         for j in range(len(temp_damage)):
             if(temp_damage2[i] == temp_damage[j] and not j in damage_indexes):
                 damage_indexes.append(j)
-    damage_indexes = damage_indexes.reverse()
+    damage_indexes.reverse()
     return damage_indexes
 
 def calculate_random():
