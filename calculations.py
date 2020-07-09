@@ -188,7 +188,7 @@ def basic_calculate(my_pokemon, enemy_pokemon, enemy_level):
     damage_indexes.reverse()
     return damage_indexes
 
-def advance_calculate(my_pokemon, enemy_pokemon, enemy_level):
+def advance_calculate(my_pokemon, enemy_pokemon, enemy_level, self_boosts, opp_boosts, enemy_hp):
     damage_values = list()
     for move in my_pokemon.moves:
         actual_move = get_move(move)
@@ -207,12 +207,28 @@ def advance_calculate(my_pokemon, enemy_pokemon, enemy_level):
                 attack = my_pokemon.attack
                 if(my_pokemon.item.lower() == "choice band"):
                     attack *= 1.5
+                if(self_boosts[0] > 0):
+                    attack *= 1 + 0.5 * self_boosts[0]
+                elif(self_boosts[0] < 0):
+                    attack *= 2.0/(2.0-self_boosts[0])
                 defense = round((2 * enemy_pokemon.stats[2] + 31 + 85/4.0) * level)
+                if(opp_boosts[1] > 0):
+                    defense *= 1 + 0.5 * opp_boosts[1]
+                elif(opp_boosts[1] < 0):
+                    defense *= 2.0/(2.0-opp_boosts[1])
             elif(actual_move.category == "Special"):
                 attack = my_pokemon.special_attack
+                if(self_boosts[2] > 0):
+                    attack *= 1 + 0.5 * self_boosts[2]
+                elif(self_boosts[2] < 0):
+                    attack *= 2.0/(2.0-self_boosts[2])
                 if(my_pokemon.item.lower() == "choice specs"):
                     attack *= 1.5
                 defense = round((2 * enemy_pokemon.stats[4] + 31 + 85/4.0) * level)
+                if(opp_boosts[3] > 0):
+                    defense *= 1 + 0.5 * opp_boosts[3]
+                elif(opp_boosts[3] < 0):
+                    defense *= 2.0/(2.0-opp_boosts[3])
             defense /= 100.0
             defense += 5
             stab = 1
@@ -236,7 +252,7 @@ def advance_calculate(my_pokemon, enemy_pokemon, enemy_level):
             damage = {damage1, damage2}
         print(move)
         print("Damage1: ", damage1, " Damage2: ", damage2)
-        damage_values.append(damage2)
+        damage_values.append(damage1)
     #print(damage_values)
     temp_damage = list()
     for value in damage_values:

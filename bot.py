@@ -245,7 +245,7 @@ while(True):
                     page_source = page_source[page_source.find("</button>") + 9:]
                 if(start_len == -1):
                     start_len = len(disabled_moves)
-                if(not random_move): move_indexes = advance_calculate(myPokemon[0], enemy_pokemon, enemy_level)
+                if(not random_move): move_indexes = advance_calculate(myPokemon[0], enemy_pokemon, enemy_level, self_boosts, opp_boosts, enemy_hp)
                 else: move_indexes = calculate_random()
                 move_index = move_indexes[0]
                 for i in range(len(move_indexes)):
