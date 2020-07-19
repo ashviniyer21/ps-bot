@@ -1,18 +1,23 @@
 import requests
+
+
 class EnemyPokemon:
     def __init__(self, name, types, stats, abilities):
         self.name = name
         self.types = types
         self.stats = stats
         self.abilities = abilities
+
     def print(self):
         print("Name: ", self.name)
         print("Types: ", self.types)
         print("Stats: ", self.stats)
         print("Abilities: ", self.abilities)
 
+
 class Pokemon:
-    def __init__(self, name, level, gender, moves, ability, item, max_hp, hp, attack, defense, special_attack, special_defense, speed):
+    def __init__(self, name, level, gender, moves, ability, item, max_hp, hp, attack, defense, special_attack,
+                 special_defense, speed):
         self.name = name
         self.level = level
         self.gender = gender
@@ -25,9 +30,11 @@ class Pokemon:
         self.defense = defense
         self.special_attack = special_attack
         self.special_defense = special_defense
-        self.speed = speed;
+        self.speed = speed
+
     def set_hp(self, hp):
         self.hp = hp
+
     def print(self):
         print("Name: ", self.name)
         print("Level: ", self.level)
@@ -41,14 +48,16 @@ class Pokemon:
         print("SPA: ", self.special_attack)
         print("SPD: ", self.special_defense)
         print("SPEED: ", self.speed)
+
+
 def get_all_pokemon():
     pokemons = list()
-    url='http://play.pokemonshowdown.com/data/pokedex.js'
+    url = 'http://play.pokemonshowdown.com/data/pokedex.js'
     page = requests.get(url)
     text = page.text
-    text = text[24:len(text)-1]
+    text = text[24:len(text) - 1]
     counter = 0
-    while(text.find("name:\"") != -1):
+    while (text.find("name:\"") != -1):
         index1 = text.find("name:\"")
         text = text[index1:]
         index1 = text.find("name:\"") + 6
@@ -67,7 +76,7 @@ def get_all_pokemon():
         text = text[index1 + 10:]
         index2 = text.find("},") + 1
         stats_string = text[:index2]
-        stats_string = stats_string[1: len(stats_string)-1]
+        stats_string = stats_string[1: len(stats_string) - 1]
         stats_temp = stats_string.split(",")
         stats = list()
         for stat in stats_temp:
@@ -82,10 +91,16 @@ def get_all_pokemon():
             abilities.append(ability[ability.find(":") + 1:])
         pokemons.append(EnemyPokemon(name, types, stats, abilities))
     return pokemons
+
+
 all_pokemon = get_all_pokemon()
+
+
 def get_pokemon(name):
     for i in range(len(all_pokemon)):
-        if(all_pokemon[i].name == name):
+        if (all_pokemon[i].name == name):
             return all_pokemon[i]
     return all_pokemon[0]
+
+
 get_pokemon("Charmander").print()
